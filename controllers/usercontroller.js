@@ -5,7 +5,7 @@ import { generateAccessToken } from "../utils/tokenGenerating.js";
 
 export const Register = async (req, res) => {
     try {
-        const { firstName, lastName, userEmail, userPassword, userRole } = req.body;
+        const { firstName, lastName, userEmail, userPassword  } = req.body;
 
         if (!userPassword) {
             return res.status(400).json({ message: "Password is required" });
@@ -23,7 +23,7 @@ export const Register = async (req, res) => {
             lastName,
             userEmail,
             userPassword: hashedPassword,
-            userRole,
+          
             tokens: {}
         });
 
@@ -40,7 +40,7 @@ export const Register = async (req, res) => {
                 firstName: user.firstName,
                 lastName: user.lastName,
                 userEmail: user.userEmail,
-                userRole: user.userRole,
+           
                 tokens: {
                     accessToken: user.tokens.accessToken,
                 }
