@@ -1,66 +1,67 @@
-import blog from "../models/Blog.js";
+import Blog from "../models/Blog.js";
+import { cloudinary } from "../utils/cloudinaryconfig.js";
 
-import {cloudinary }from "../utils/cloudinaryconfig.js"
-
-export const createBlog=async(req,res)=>{
-    try{
-        if(!req.files|| !req.files.images || req.files.images.length ===0){
-            return res.status(400).json({success:false,message:"No image uploaded"});
+// Create a new blog post
+export const createBlog = async (req, res) => {
+    try {
+        if (!req.files || !req.files.images || req.files.images.length === 0) {
+            return res.status(400).json({ success: false, message: "No image uploaded" });
         }
-            const result = await cloudinary.uploader.upload(req.files.images[0].path);
-        
-const{Title,Description,Date,}=req.body;
 
-const images = result.secure_url;
-const newBlog=new blog({Title,Description,Date,images});
+        // Upload image to Cloudinary
+        const result = await cloudinary.uploader.upload(req.files.images[0].path);
+        const { Title, Description, Date } = req.body;
 
-await newBlog.save();
+        // Create new blog post
+        const images = result.secure_url;
+        const newBlog = new Blog({ Title, Description, Date, images });
 
-res.status(201).json({success:true,message:"blog created successfully",blog:newBlog});
-    }catch(error){
-    res.status(500).json({success:false,message:"server Error",error:error.message});
-    
+        await newBlog.save();
 
+        res.status(201).json({ success: true, message: "Blog created successfully", blog: newBlog });
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Server Error", error: error.message });
     }
-}
-export const getAllblog=async (req,res)=>{
+};
 
+// Get all blog posts
+export const getAllblog = async (req, res) => {
+    try {
+        const blogs = await Blog.find();
+        res.status(200).json({ success: true, blogs });
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Server Error", error: error.message });
+    }
+};
 
-    try{
-const blogs= await blog.find();
-res.status(200).json({success:true,blogs})
-    }
-    catch(error)
-    {
-  res.status(500).json({success:false,message:"server Error",error:error.message})
-    }
-}
-export const getBlogById=async(req,res)=>{
-    try{
+// Get blog by ID
+export const getBlogById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const blog = await Blog.findById(id);
 
-    
-const {id}=req.params;
-const blog= await blog.findById(id);
-    if(!blog)
-    {return res.status(404).json({success:false,message:"blog not found"})}
-    res.status(200).json({success:true,blog})
-}
-catch(error){
-    res.status(500).json({success:false,message:"server Error",error:error.message})
-}
+        if (!blog) {
+            return res.status(404).json({ success: false, message: "Blog not found" });
+        }
 
-}
-export const deleteBlogById=async(req,res)=>{
-    try{
-        const{id}=req.params;
-        const blog=blog.findByIdAndDelete(id);
-        if(!blog)
-            {return res.status(404).json({success:false,message:"blog not found"});
+        res.status(200).json({ success: true, blog });
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Server Error", error: error.message });
     }
-        res.status(200).json({success:true,message:"blog deleted successfuly"});
+};
+
+// Delete blog by ID
+export const deleteBlogById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const blog = await Blog.findByIdAndDelete(id);
+
+        if (!blog) {
+            return res.status(404).json({ success: false, message: "Blog not found" });
+        }
+
+        res.status(200).json({ success: true, message: "Blog deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Server Error", error: error.message });
     }
-    catch(error){
-        res.status(500).json({success:false,message:"server Error",error:error.message})
-    }
-        
-    }
+};
