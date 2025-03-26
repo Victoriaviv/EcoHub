@@ -7,41 +7,11 @@ const commentSchema = new mongoose.Schema(
       ref: "Blog", 
       required: true 
     },
-    userId: { 
-      type: mongoose.Schema.Types.ObjectId, 
-      ref: "User", 
-      required: false 
-    },
-    name: { 
-      type: String, 
-      required: true 
-    },
-    email: { 
-      type: String, 
-      required: false 
-    },
     text: { 
       type: String, 
       required: true 
     },
-    status: { 
-      type: String, 
-      enum: ["pending", "approved", "rejected"], 
-      default: "pending" 
-    },
-    likes: { 
-      type: Number, 
-      default: 0 
-    },
-    dislikes: { 
-      type: Number, 
-      default: 0 
-    },
-    parentId: { 
-      type: mongoose.Schema.Types.ObjectId, 
-      ref: "Comment",
-      default: null 
-    }
+    // Other fields like userId, name, email can be optional if you're not sending them
   },
   { timestamps: true }
 );

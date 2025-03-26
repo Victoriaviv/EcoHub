@@ -3,7 +3,6 @@ import {
   createComment, 
   getCommentsByBlogId, 
   deleteComment, 
-  
 } from "../controllers/commentcontroller.js";
 
 const router = express.Router();
@@ -16,6 +15,5 @@ router.get("/getCommentsByBlogId/:blogId", getCommentsByBlogId);
 
 // Delete a comment (admin only)
 router.delete("/deleteComment/:id", deleteComment);
-
 
 export default router;
