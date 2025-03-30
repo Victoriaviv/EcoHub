@@ -35,18 +35,18 @@ export const getAllblog = async (req, res) => {
 
 
 export const getBlogById = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const blog = await Blog.findById(id);
+    // try {
+    //     const { id } = req.params;
+    //     const blog = await Blog.findById(id);    
 
-        if (!blog) {
-            return res.status(404).json({ success: false, message: "Blog not found" });
-        }
+    //     if (!blog) {
+    //         return res.status(404).json({ success: false, message: "Blog not found" });
+    //     }
 
-        res.status(200).json({ success: true, blog });
-    } catch (error) {
-        res.status(500).json({ success: false, message: "Server Error", error: error.message });
-    }
+    //     res.status(200).json({ success: true, blog });
+    // } catch (error) {
+    //     res.status(500).json({ success: false, message: "Server Error", error: error.message });
+    // }
 };
 
 
