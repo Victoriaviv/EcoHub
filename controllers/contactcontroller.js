@@ -1,6 +1,6 @@
 import Contact from "../models/Contact.js";
 
-// Create a Contact Message
+
 export const createContact = async (req, res) => {
   try {
     const { name, email, phone, subject, message } = req.body;
@@ -18,7 +18,7 @@ export const createContact = async (req, res) => {
   }
 };
 
-// Get All Contact Messages
+
 export const getAllContacts = async (req, res) => {
   try {
     const contacts = await Contact.find();
@@ -28,7 +28,7 @@ export const getAllContacts = async (req, res) => {
   }
 };
 
-// Get Contact Message by ID
+
 export const getContactById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -44,7 +44,6 @@ export const getContactById = async (req, res) => {
   }
 };
 
-// Delete Contact Message by ID
 export const deleteContactById = async (req, res) => {
   try {
     const { id } = req.params;

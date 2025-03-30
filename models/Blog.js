@@ -5,6 +5,11 @@ const{model,Schema} = mongoose;
 
 const blogSchema=new Schema(
     {
+      userId:{ 
+         type: mongoose.Schema.Types.ObjectId, 
+         ref: "User", 
+         required: true 
+       },
      Title:{
         type:String,
         required:true

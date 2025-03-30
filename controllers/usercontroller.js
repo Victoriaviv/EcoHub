@@ -5,7 +5,7 @@ import { generateAccessToken } from "../utils/tokenGenerating.js";
 
 export const Register = async (req, res) => {
     try {
-        const { firstName, lastName, userEmail, userPassword  } = req.body;
+        const { firstName, lastName, userEmail, userPassword, userRole  } = req.body;
 
         if (!userPassword) {
             return res.status(400).json({ message: "Password is required" });
@@ -22,8 +22,8 @@ export const Register = async (req, res) => {
             firstName,
             lastName,
             userEmail,
+            userRole,
             userPassword: hashedPassword,
-          
             tokens: {}
         });
 
@@ -57,7 +57,7 @@ export const Login = async (req, res) => {
       const user = await User.findOne({ userEmail });
   
       if (!user) {
-        // User not found
+     
         return res.status(404).json({ message: "User not found" });
       }
   userEmail, userPassword
@@ -84,7 +84,7 @@ export const Login = async (req, res) => {
         },
       });
     } catch (error) {
-      // General error handling
+     
       res.status(500).json({ message: "Server error", error: error.message });
     }
   };

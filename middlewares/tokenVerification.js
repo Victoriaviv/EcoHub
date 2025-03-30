@@ -12,7 +12,7 @@ export const auth = async (req, res, next) => {
       return res.status(401).json({ message: "Access denied, token missing" });
     }
 
-    const token = authHeader.split(" ")[1]; // Extract the actual token
+    const token = authHeader.split(" ")[1];
 
     if (!token) {
       return res.status(401).json({ message: "Access denied, invalid token format" });
@@ -20,22 +20,22 @@ export const auth = async (req, res, next) => {
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // Find user by ID
+    
     const user = await User.findById(decoded._id);
     
     if (!user) {
       return res.status(401).json({ message: "User not found or token expired" });
     }
 
-    // Ensure token is the latest issued
+ 
     if (user.tokens.accessToken !== token) {
       return res.status(401).json({ message: "Invalid or expired token" });
     }
 
-    req.user = user; // Attach user to request
+    req.user = user; 
     req.token = token;
-     req.user.userRole = decoded.userRole;
-    next(); // Proceed to next middleware
+    req.user.userRole = decoded.userRole;
+    next(); 
   } catch (error) {
     console.error("JWT Verification Error:", error);
     return res.status(401).json({ message: "Authentication failed", error: error.message });

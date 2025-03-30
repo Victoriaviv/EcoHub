@@ -1,20 +1,18 @@
 import Blog from "../models/Blog.js";
 import { cloudinary } from "../utils/cloudinaryconfig.js";
 
-// Create a new blog post
+
 export const createBlog = async (req, res) => {
     try {
         if (!req.files || !req.files.images || req.files.images.length === 0) {
             return res.status(400).json({ success: false, message: "No image uploaded" });
         }
 
-        // Upload image to Cloudinary
         const result = await cloudinary.uploader.upload(req.files.images[0].path);
         const { Title, Description, Date } = req.body;
 
-        // Create new blog post
         const images = result.secure_url;
-        const newBlog = new Blog({ Title, Description, Date, images });
+        const newBlog = new Blog({ Title, Description, Date, images ,userId:req.user?._id});
 
         await newBlog.save();
 
@@ -24,8 +22,9 @@ export const createBlog = async (req, res) => {
     }
 };
 
-// Get all blog posts
+
 export const getAllblog = async (req, res) => {
+    
     try {
         const blogs = await Blog.find();
         res.status(200).json({ success: true, blogs });
@@ -34,7 +33,7 @@ export const getAllblog = async (req, res) => {
     }
 };
 
-// Get blog by ID
+
 export const getBlogById = async (req, res) => {
     try {
         const { id } = req.params;
@@ -50,7 +49,7 @@ export const getBlogById = async (req, res) => {
     }
 };
 
-// Delete blog by ID
+
 export const deleteBlogById = async (req, res) => {
     try {
         const { id } = req.params;

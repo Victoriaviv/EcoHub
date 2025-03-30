@@ -13,7 +13,7 @@ const blogRouter = express.Router();
 const upload = configureMulter();
 
 
-blogRouter.post("/createBlog", upload, createBlog);
+blogRouter.post("/createBlog", upload,auth,admin, createBlog);
 
 
 blogRouter.get("/getAllblog", getAllblog);
