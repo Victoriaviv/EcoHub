@@ -1,4 +1,3 @@
-
 import mongoose from "mongoose";
 
 const{model,Schema} = mongoose;
@@ -15,10 +14,6 @@ const blogSchema=new Schema(
         required:true
      },
      Description:{
-        type:String,
-        required:true
-     },
-     Date:{
         type:String,
         required:true
      },

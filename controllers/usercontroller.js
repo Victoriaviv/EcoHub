@@ -1,4 +1,3 @@
-
 import  User from "../models/user.js";
 import bcrypt from "bcrypt"
 import { generateAccessToken } from "../utils/tokenGenerating.js";
@@ -36,14 +35,15 @@ export const Register = async (req, res) => {
             success: true,
             message: "User registered successfully",
             user: {
-                _id: user._id,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                userEmail: user.userEmail,
-           
-                tokens: {
-                    accessToken: user.tokens.accessToken,
-                }
+                 user :{
+                    _id: user._id,
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    userEmail: user.userEmail,
+                    userRole: user.userRole,
+                 }
+           ,
+                tokens:  accessToken, 
             }
         });
 
@@ -68,19 +68,28 @@ export const Login = async (req, res) => {
       const accessToken = generateAccessToken(user);
   
   
-      user.tokens.accessToken =  accessToken;
+      // user.tokens.accessToken =  accessToken;
   
-      await user.save();
+      // await user.save();
+      
   
       res.json({
         message: "Login successful!",
         user: {
-          _id: user._id,
-          userEmail: user.userEmail,
-          
-          token: {
-            accessToken: user.tokens.accessToken,
+          // _id: user._id,
+          // userEmail: user.userEmail,
+          // ...user,
+          // token: {
+          //   accessToken: user.tokens.accessToken,
+          // },
+          user : {
+            _id: user._id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            userEmail: user.userEmail,
+            userRole: user.userRole,
           },
+          token: accessToken,
         },
       });
     } catch (error) {
@@ -88,3 +97,27 @@ export const Login = async (req, res) => {
       res.status(500).json({ message: "Server error", error: error.message });
     }
   };
+
+  export const getmyprofile = async (req, res) => {
+    try {
+        const user =  req.user;
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        res.status(200).json({
+            message: "User profile retrieved successfully",
+            user: {
+                _id: user._id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                userEmail: user.userEmail,
+                userRole: user.userRole,
+            }
+        });
+    } catch (error) {
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+
+    
+   
+  }

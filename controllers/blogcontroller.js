@@ -7,12 +7,11 @@ export const createBlog = async (req, res) => {
         if (!req.files || !req.files.images || req.files.images.length === 0) {
             return res.status(400).json({ success: false, message: "No image uploaded" });
         }
-
         const result = await cloudinary.uploader.upload(req.files.images[0].path);
-        const { Title, Description, Date } = req.body;
+        const { Title, Description} = req.body;
 
         const images = result.secure_url;
-        const newBlog = new Blog({ Title, Description, Date, images ,userId:req.user?._id});
+        const newBlog = new Blog({ Title, Description, images ,userId:req.user?._id});
 
         await newBlog.save();
 
@@ -35,18 +34,14 @@ export const getAllblog = async (req, res) => {
 
 
 export const getBlogById = async (req, res) => {
-    // try {
-    //     const { id } = req.params;
-    //     const blog = await Blog.findById(id);    
+    
 
-    //     if (!blog) {
-    //         return res.status(404).json({ success: false, message: "Blog not found" });
-    //     }
 
-    //     res.status(200).json({ success: true, blog });
-    // } catch (error) {
-    //     res.status(500).json({ success: false, message: "Server Error", error: error.message });
-    // }
+
+ 
+
+
+    
 };
 
 
